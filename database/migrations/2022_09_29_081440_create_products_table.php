@@ -23,6 +23,7 @@ return new class extends Migration
             $table->smallint(6)('quantityInStock');
             $table->decimal(10,2)('buyPrice');
             $table->decimal(10,2)('MSRP');
+            
         });
     }
 

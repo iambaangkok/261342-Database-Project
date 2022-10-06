@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Products;
+
 use Illuminate\Http\Request;
-use App\Models\Products; ## Wait Product
-class ProductController extends Controller
+
+class HomeController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -13,8 +15,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Products::all();
-        return  $products;
+      
     }
 
     /**
@@ -24,7 +25,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-        return view('createproduct');
+        //
     }
 
     /**
@@ -33,36 +34,9 @@ class ProductController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-
-     /**
-      * 
-      */
-
-
     public function store(Request $request)
     {
-        $product = new Products([
-            'name' => $request->name,
-            'description' => $request->description,
-            'price' => $request->price,
-            'count' => $request->count,
-            'productCode' =>$request->productCode,
-            'productName'=>$request->productName,
-            'productLine'=>$request->productLine,
-            'productScale'=>$request->productScale,
-            'productvendor'=>$request->productvendor,
-            'productDescrition'=>$request->productDescrition,
-            'quantityInStock'=>$request->quantityInStock,
-            'buyPrice'=>$request->buyPrice,
-            'MSRP'=>$request->MSRP
-            ]);
-
-
-            $product->save();
-            $products = Products::all();
-            return view('viewproducts', ['products' => $products]);
-
-            
+        //
     }
 
     /**
@@ -108,5 +82,14 @@ class ProductController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    /**
+     * Randome product from store five items
+     */
+
+    public function randomProducts(){
+        $products = Products::all(5);
+        return $products;
     }
 }
