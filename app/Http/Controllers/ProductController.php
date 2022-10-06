@@ -13,8 +13,13 @@ class ProductController extends Controller
      */
     public function index()
     {
+<<<<<<< HEAD
         // $products = Products::all();
         // return view('viewproducts', ['products' => $products]);
+=======
+        $products = Products::all();
+        return view('viewproducts', ['products' => $products]);
+>>>>>>> 870e48f085876872562d731babea789a7a2ddf06
     }
 
     /**
@@ -24,7 +29,11 @@ class ProductController extends Controller
      */
     public function create()
     {
+<<<<<<< HEAD
         // return view('createproduct');
+=======
+        return view('createproduct');
+>>>>>>> 870e48f085876872562d731babea789a7a2ddf06
     }
 
     /**
@@ -39,6 +48,7 @@ class ProductController extends Controller
       */
     public function store(Request $request)
     {
+<<<<<<< HEAD
         // $product = new Products([
         //     'name' => $request->name,
         //     'description' => $request->description,
@@ -59,6 +69,28 @@ class ProductController extends Controller
         //     $product->save();
         //     $products = Products::all();
         //     return view('viewproducts', ['products' => $products]);
+=======
+        $product = new Products([
+            'name' => $request->name,
+            'description' => $request->description,
+            'price' => $request->price,
+            'count' => $request->count,
+            'productCode' =>$request->productCode,
+            'productName'=>$request->productName,
+            'productLine'=>$request->productLine,
+            'productScale'=>$request->productScale,
+            'productvendor'=>$request->productvendor,
+            'productDescrition'=>$request->productDescrition,
+            'quantityInStock'=>$request->quantityInStock,
+            'buyPrice'=>$request->buyPrice,
+            'MSRP'=>$request->MSRP
+            ]);
+
+
+            $product->save();
+            $products = Products::all();
+            return view('viewproducts', ['products' => $products]);
+>>>>>>> 870e48f085876872562d731babea789a7a2ddf06
             
     }
 

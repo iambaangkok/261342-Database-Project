@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\ProductController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -17,6 +17,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+<<<<<<< HEAD
 Route::group(['namespace'=>  'App\Http\Controllers'], function()
 {
     
@@ -33,3 +34,6 @@ Route::group(['namespace'=>  'App\Http\Controllers'], function()
 Route::get('/register-complete', function () {
     return view('register-complete');
 });
+=======
+Route::resource('products' , ProductController::class);Result:
+>>>>>>> 870e48f085876872562d731babea789a7a2ddf06
