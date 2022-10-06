@@ -16,3 +16,20 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::group(['namespace'=>  'App\Http\Controllers'], function()
+{
+    
+    /*** Home Routes*/
+    Route::get('/', 'ProductController@index')->name('home.index');
+
+    /*** Register Routes*/
+    Route::get('/register', 'RegisterController@show')->name('register.show');
+    Route::post('/register', 'RegisterController@register')->name('register.perform');
+   
+    
+});
+
+Route::get('/register-complete', function () {
+    return view('register-complete');
+});
