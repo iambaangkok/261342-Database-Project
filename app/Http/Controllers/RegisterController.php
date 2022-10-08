@@ -25,13 +25,13 @@ class RegisterController extends Controller
         // $user =  User::create($request->validated());
         // auth() ->login($user);
         // return redirect('/register-complete') -> with('success',  "Account successfully registered.");
-        $array1 = $request->validated();
-        $user =  array(
-            $array1["username"],
-            $array1["email"],
-            $array1["password"],
-            $array1["password_confirmation"],
-        );
+        $data = $request->validated();
+        // $user =  array(
+        //     $array1["username"],
+        //     $array1["email"],
+        //     $array1["password"],
+        //     $array1["password_confirmation"],
+        // );
 
         // $customer =  array(
         //     $array1["contactFirstName"],
@@ -46,9 +46,31 @@ class RegisterController extends Controller
         //     $array1["postalCode"],
         // );
 
-        User::create($user);
-        // Customer::create($customer);
-        return ( $array1);
+        // User::create($user);
+        // // Customer::create($customer);
+        // return ( $array1);
+        $user = User::create([
+            'username' => $data['username'],
+            'email' => $data['email'],
+            'password' => $data['password'],
+            'password_confirmation' => $data['password_confirmation'],
+        ]);
+
+        $customers = Customers::create([
+            'customerName' => $data['customerName'],
+            'contactFirstName' => $data['contactFirstName'],
+            'contactLastName' => $data['contactLastName'],
+            'phone' => $data['phone'],
+            'addressLine1' => $data['addressLine1'],
+            'addressLine2' => $data['addressLine2'],
+            'city' => $data['city'],
+            'state' => $data['state'],
+            'postalCode' => $data['postalCode'],
+            'country' => $data['country']
+            
+        ]);
+
+        return redirect('/register-complete')->with('success', "Account successfully registered.");
     }
 
     public function registerComplete(){

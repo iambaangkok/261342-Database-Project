@@ -17,11 +17,11 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-<<<<<<< HEAD
 Route::group(['namespace'=>  'App\Http\Controllers'], function()
 {
-    
-    /*** Home Routes*/
+    Route::group(['middleware' => ['guest']], function() {
+        
+    /* Home Routes*/
     Route::get('/', 'ProductController@index')->name('home.index');
 
     /*** Register Routes*/
@@ -30,10 +30,11 @@ Route::group(['namespace'=>  'App\Http\Controllers'], function()
    
     
 });
+});
 
 Route::get('/register-complete', function () {
     return view('register-complete');
 });
-=======
+
+
 Route::resource('products' , ProductController::class);Result:
->>>>>>> 870e48f085876872562d731babea789a7a2ddf06
