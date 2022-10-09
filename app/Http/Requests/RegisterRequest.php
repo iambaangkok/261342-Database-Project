@@ -26,15 +26,15 @@ class RegisterRequest extends FormRequest
             'username'=> 'required|unique:users,username',
             'password'=> 'required|min:8',
             'password_confirmation'=> 'required|same:password',
-            'contactFirstName',
-            'contactLastName',
+            'contactFirstName'=>'required',
+            'contactLastName'=>'required',
             'phone' => 'required|unique:customers,phone',
             'customerName' => 'required|unique:customers,customerName',
             'addressLine1' => 'required|unique:customers,addressLine1',
             'addressLine2' => 'required|unique:customers,addressLine2',
-            'country',
-            'state',
-            'city',
-            'postalCode'];
+            'country'=>'required',
+            'state'=>'required',
+            'city'=>'required',
+            'postalCode'=>'required'];
     }
 }
