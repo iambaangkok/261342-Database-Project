@@ -6,6 +6,8 @@ use App\Models\Products;
 
 use Illuminate\Http\Request;
 
+use Illuminate\Support\Facades\DB;
+
 class HomeController extends Controller
 {
     /**
@@ -15,7 +17,12 @@ class HomeController extends Controller
      */
     public function index()
     {
-      
+        $random = DB::table('Products')
+            ->inRandomOrder()
+            // ->first(3);
+            ->limit(3)
+            ->get();
+        return $random;
     }
 
     /**
@@ -88,8 +95,4 @@ class HomeController extends Controller
      * Randome product from store five items
      */
 
-    public function randomProducts(){
-        $products = Products::all(5);
-        return $products;
-    }
 }
