@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Products; ## Wait Product
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\limit;
+
 class ProductController extends Controller
 {
     /**
@@ -15,6 +18,7 @@ class ProductController extends Controller
     {
         $products = Products::all();
         return  $products;
+
     }
 
     /**
@@ -26,6 +30,20 @@ class ProductController extends Controller
     {
         return view('createproduct');
     }
+/**
+ * 
+ * @return http://127.0.0.1:8000/products?page=  n: R to 1 - 11
+ */
+    public function pagination()
+    {
+        $page = DB::table('Products')
+            ->Paginate(
+                $perPage = 10 , $columns = ['*'] , $pageName ='page'
+            );
+        
+
+        return $page;
+    }
 
     /**
      * Store a newly created resource in storage.
@@ -34,9 +52,9 @@ class ProductController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-     /**
-      * 
-      */
+    /**
+     * 
+     */
 
 
     public function store(Request $request)
@@ -46,23 +64,21 @@ class ProductController extends Controller
             'description' => $request->description,
             'price' => $request->price,
             'count' => $request->count,
-            'productCode' =>$request->productCode,
-            'productName'=>$request->productName,
-            'productLine'=>$request->productLine,
-            'productScale'=>$request->productScale,
-            'productvendor'=>$request->productvendor,
-            'productDescrition'=>$request->productDescrition,
-            'quantityInStock'=>$request->quantityInStock,
-            'buyPrice'=>$request->buyPrice,
-            'MSRP'=>$request->MSRP
-            ]);
+            'productCode' => $request->productCode,
+            'productName' => $request->productName,
+            'productLine' => $request->productLine,
+            'productScale' => $request->productScale,
+            'productvendor' => $request->productvendor,
+            'productDescrition' => $request->productDescrition,
+            'quantityInStock' => $request->quantityInStock,
+            'buyPrice' => $request->buyPrice,
+            'MSRP' => $request->MSRP
+        ]);
 
 
-            $product->save();
-            $products = Products::all();
-            return view('viewproducts', ['products' => $products]);
-
-            
+        $product->save();
+        $products = Products::all();
+        return view('viewproducts', ['products' => $products]);
     }
 
     /**

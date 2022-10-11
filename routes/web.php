@@ -52,6 +52,7 @@ Route::group(['namespace' => 'App\Http\Controllers'], function()
 */
     Route::get('/Random_product_3', 'HomeController@index');
     Route::get('/products', 'ProductController@index');
+    Route::get('/products//', 'ProductController@pagination');
     Route::get('/', 'ProductController@index')->name('home.index');
     Route::group(['middleware' => ['guest']], function() {
 /**
