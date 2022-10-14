@@ -9,6 +9,8 @@ use App\Http\Controllers\limit;
 
 class ProductController extends Controller
 {
+
+
     /**
      * Display a listing of the resource.
      *
@@ -38,7 +40,7 @@ class ProductController extends Controller
     {
         $page = DB::table('Products')
             ->Paginate(
-                $perPage = 10 , $columns = ['*'] , $pageName ='page'
+                $perPage = 12 , $columns = ['*'] , $pageName ='page'
             );
         
 
