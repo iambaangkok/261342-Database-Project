@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use   Illuminate\Http\Request;
 use   App\Http\Requests\RegisterRequest;
 use   App\Models\User;
-use   App\Models\Customers;
+use   App\Models\Customer;
 
 class RegisterController extends Controller
 {
@@ -34,7 +34,7 @@ class RegisterController extends Controller
             'password_confirmation' => $data['password_confirmation'],
         ]);
 
-        $customers = Customers::create([
+        $customers = Customer::create([
             'customerNumber' => rand(1,100),
             'customerName' => $data['customerName'],
             'contactFirstName' => $data['contactFirstName'],
