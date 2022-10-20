@@ -25,7 +25,7 @@ class RegisterController extends Controller
         // $user =  User::create($request->validated());
         // auth() ->login($user);
         // return redirect('/register-complete') -> with('success',  "Account successfully registered.");
-        $data = $request->validated();
+        $data = $request->all();
         
         $user = User::create([
             'username' => $data['username'],
@@ -34,14 +34,14 @@ class RegisterController extends Controller
             'password_confirmation' => $data['password_confirmation'],
         ]);
 
-        $customers = Customer::create([
-            'customerNumber' => rand(1,100),
+        $customer = Customer::create([
+            // 'customerNumber' => rand(1,100),
             'customerName' => $data['customerName'],
             'contactFirstName' => $data['contactFirstName'],
             'contactLastName' => $data['contactLastName'],
             'phone' => $data['phone'],
             'addressLine1' => $data['addressLine1'],
-            'addressLine1' => $data['addressLine2'],
+            'addressLine2' => $data['addressLine2'],
             'city' => $data['city'],
             'state' => $data['state'],
             'postalCode' => $data['postalCode'],
@@ -50,7 +50,7 @@ class RegisterController extends Controller
         ]);
 
         // auth() ->login($user);
-        return redirect('/register-complete') -> with('success',  "Account successfully registered.");
+        return response()->json($user, 200);
     }
 
     public function registerComplete(){
