@@ -11,6 +11,7 @@ return new class extends Migration
      *
      * @return void
      */
+    
     public function up()
     {
         Schema::create('customers', function (Blueprint $table) {
@@ -19,7 +20,7 @@ return new class extends Migration
             $table->string("contactLastName", 255);
             $table->text("phone");
             $table->text("addressLine1");
-            $table->text("addressLine1")->nullable();
+            $table->text("addressLine2")->nullable();
             $table->text("city");
             $table->text("state");
             $table->integer("postalCode");
