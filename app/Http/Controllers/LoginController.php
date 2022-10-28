@@ -16,7 +16,7 @@ class LoginController extends Controller
     public function login(LoginRequest $request) {
             $credentials = $request->getCredentials();
             if(!Auth::validate($credentials)):
-                return redirect()->to('login') ->withErrors(trans('auth.failed'));
+                return response()->json($user,422);
                 endif; 
                 $user = Auth::getProvider()->retrieveByCredentials($credentials);
                 Auth::login($user);
@@ -26,7 +26,7 @@ class LoginController extends Controller
         /** * Handle response after user authenticated * * @param Request $request * @param Auth $user * * @return \Illuminate\Http\Response */
         protected function authenticated(Request $request, $user) 
         {
-            return redirect()->intended();
+            return response()->json($user, 200);
         }
 }
 
