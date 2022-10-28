@@ -42,13 +42,18 @@ Route::group(['namespace' => 'App\Http\Controllers'], function()
 */
     Route::get('/login', 'LoginController@show')->name('login.show');
     Route::post('/login', 'LoginController@login')->name('login.perform');
+
+    // Route::get('/logout', 'LogoutController@getToken')->name('logout.getToken');
+   
 });
+
+
     
     Route::group(['middleware' => ['auth']], function() {
 /**
 * Logout Routes
 */
-        Route::get('/logout', 'LogoutController@perform')->name('logout.perform');
+        Route::post('/logout', 'LogoutController@logout')->name('logout.perform');
         // Route::get('/cart', 'ProductController@cart')->name('cart');
         // Route::get('/add-to-cart/{id}', 'ProductController@addToCart')->name('add.to.cart');
         // Route::delete('/remove-from-cart/{id}', 'ProductController@remove')->name('remove.from.cart');
