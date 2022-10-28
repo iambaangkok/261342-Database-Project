@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\cart;
-use App\Models\Products;
+use App\Models\Product;
 use App\Http\Requests\StorecartRequest;
 use App\Http\Requests\UpdatecartRequest;
 use Illuminate\Support\Facades\DB;
@@ -88,14 +88,17 @@ class CartController extends Controller
 
     public function carts(){
 
-        $carts = DB::select('select * from carts');
+        $carts = DB::select('select * from Cart');
         
-        return view('cart', ['carts' => $carts]);
+
+        return $carts;
+
+        // return view('cart', ['carts' => $carts]);
     }
 
     public function remove($id){
         $cart = Cart::findOrFail($id);
-        $product = Products::where('name', '=', $cart->name)->first();
+        $product = Product::where('name', '=', $cart->name)->first();
         DB::transaction(function () use ($product, $cart) {
             $product->stock = $product->stock + $cart->quantity;
             $product->save();
@@ -106,7 +109,7 @@ class CartController extends Controller
 
     public function addToCart($id)
     {
-        $product = Products::findOrFail($id);
+        $product = Product::findOrFail($id);
         $cart = Cart::where('name', '=', $product->name)->first();
         DB::transaction(function () use ($product, $cart) {
             if ($cart != null) {
