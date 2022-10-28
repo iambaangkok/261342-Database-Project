@@ -21,7 +21,7 @@ class LoginRequest extends FormRequest
             return [ 'email' => $username, 'password' => $this->get('password') ];
             }
             
-            return $this->only('username', 'password');
+            return $this->only('username', 'password' );
         }
         
         private function isEmail($param) {

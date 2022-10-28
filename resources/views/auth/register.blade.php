@@ -73,7 +73,7 @@
         </div>
 
         <div class="form-group form-floating mb-3">
-            <input type="text" class="form-control" name="addressLine2" value="{{ old('addressLine2') }}" placeholder="Address Line 2" required="required" autofocus>
+            <input type="text" class="form-control" name="addressLine2" value="{{ old('addressLine2') }}" placeholder="Address Line 2" autofocus>
             <label for="floatingName">Address Line 2</label>
             @if ($errors->has('addressLine2'))
                 <span class="text-danger text-left">{{ $errors->first('addressLine2') }}</span>
@@ -86,7 +86,7 @@
         </div>
 
         <div class="form-group form-floating mb-3">
-            <input type="text" class="form-control" name="state" value="{{ old('state') }}" placeholder="State" required="required" autofocus>
+            <input type="text" class="form-control" name="state" value="{{ old('state') }}" placeholder="State" autofocus>
             <label for="floatingName">State</label>
         </div>
 
