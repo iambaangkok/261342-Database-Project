@@ -13,19 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('cart', function (Blueprint $table) {
-
-            $table->string('productCode',15)->unique();
-            $table->string('productName',70);
-            $table->string('productLine',50);
-            $table->string('productScale',10);
-            $table->string('productVendor',50);
-            $table->text('productDescrition');
-            $table->smallInteger('quantityInStock',6);
-            $table->decimal('buyPrice',10,2);
-            $table->decimal('MSRP',10,2);
+        Schema::create('carts', function (Blueprint $table) {
+            $table->integer('cartid')->autoIncrement();;
+            $table->integer('id_user');  
             $table->timestamps();
-
+            // $table->primary(['cartid']);
         });
     }
 

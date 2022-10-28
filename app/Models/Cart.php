@@ -7,18 +7,18 @@ use Illuminate\Database\Eloquent\Model;
 
 class Cart extends Model
 {
+    protected $table = 'carts';
+	protected $primaryKey = 'cartid';
+	public $incrementing = false;
+	public $timestamps = True;
     
     protected $fillable = [
-        'productCode',
-        'productName',
-        'productLine',
-        'productScale',
-        'productVendor',
-        'productDescrition',
-        'quantityInStock',
-        'buyPrice',
-        'MSRP'
+        'id_user'
     ];
 
     
+	public function user()
+	{
+		return $this->hasOne(User::class, 'id_user');
+	}
 }
