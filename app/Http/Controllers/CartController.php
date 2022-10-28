@@ -88,9 +88,12 @@ class CartController extends Controller
 
     public function carts(){
 
-        $carts = DB::select('select * from carts');
+        $carts = DB::select('select * from Cart');
         
-        return view('cart', ['carts' => $carts]);
+
+        return $carts;
+
+        // return view('cart', ['carts' => $carts]);
     }
 
     public function remove($id){

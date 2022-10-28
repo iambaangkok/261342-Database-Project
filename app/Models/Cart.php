@@ -7,8 +7,18 @@ use Illuminate\Database\Eloquent\Model;
 
 class Cart extends Model
 {
-
-    Protected $fillable =[
-        'name','price','quantity','image'
+    
+    protected $fillable = [
+        'productCode',
+        'productName',
+        'productLine',
+        'productScale',
+        'productVendor',
+        'productDescrition',
+        'quantityInStock',
+        'buyPrice',
+        'MSRP'
     ];
+
+    
 }

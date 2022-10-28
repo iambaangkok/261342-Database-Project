@@ -54,6 +54,7 @@ Route::group(['namespace' => 'App\Http\Controllers'], function()
     Route::get('/products', 'ProductController@index');
     Route::get('/products//', 'ProductController@pagination');
     Route::get('/', 'ProductController@index')->name('home.index');
+    Route::get('/myCart' , 'CartController@carts');
     Route::group(['middleware' => ['guest']], function() {
 /**
 * Register Routes

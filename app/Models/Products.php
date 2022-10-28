@@ -10,12 +10,20 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Products extends Model
 {
+
+    // protected $primaryKey = 'productCode';
+    // protected $keyType = 'BTREE';
+    // protected $connection = 'sqlite';
+
+    const CREATED_AT = 'creation_date';
+    const UPDATED_AT = 'updated_date';
+
     protected $fillable = [
         'productCode',
         'productName',
         'productLine',
         'productScale',
-        'productvendor',
+        'productVendor',
         'productDescrition',
         'quantityInStock',
         'buyPrice',
