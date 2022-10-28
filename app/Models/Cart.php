@@ -12,6 +12,9 @@ class Cart extends Model
 	public $incrementing = false;
 	public $timestamps = True;
     
+    /**
+     *  id_user is remember_token
+     */
     protected $fillable = [
         'id_user'
     ];

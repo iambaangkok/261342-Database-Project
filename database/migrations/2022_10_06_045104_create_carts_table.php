@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('carts', function (Blueprint $table) {
-            $table->integer('cartid')->autoIncrement();;
+            $table->integer('cartid')->autoIncrement();
             $table->integer('id_user');  
             $table->timestamps();
             // $table->primary(['cartid']);
@@ -30,4 +30,4 @@ return new class extends Migration
     {
         Schema::dropIfExists('carts');
     }
-};
+};  
