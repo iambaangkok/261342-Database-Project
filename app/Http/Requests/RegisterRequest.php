@@ -31,9 +31,9 @@ class RegisterRequest extends FormRequest
             'phone' => 'required|unique:customers,phone',
             'customerName' => 'required|unique:customers,customerName',
             'addressLine1' => 'required|unique:customers,addressLine1',
-            'addressLine2' => 'required|unique:customers,addressLine2',
+            'addressLine2' => 'nullable',
             'country'=>'required',
-            'state'=>'required',
+            'state'=>'nullable',
             'city'=>'required',
             'postalCode'=>'required'];
     }

@@ -32,6 +32,8 @@ class LogoutController extends Controller
         $results = DB::select('select * from users where remember_token=?', [$request["token"]]);
         DB::update('UPDATE users SET remember_token = NULL WHERE remember_token=?', [$request["token"]]);
         // $results['remember_token'] = null;
+        Session::flush();
+        Auth::logout();
         return $results;
 
 
@@ -47,8 +49,7 @@ class LogoutController extends Controller
         // $user->save();
         // // dd($user);
 
-        // Session::flush();
-        // Auth::logout();
+        
 
         
         // return response()->json(['success'=>'true','message' => 'Logout Successfully.'], 200);
