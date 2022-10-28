@@ -42,7 +42,13 @@ Route::group(['namespace' => 'App\Http\Controllers'], function()
 */
     Route::get('/login', 'LoginController@show')->name('login.show');
     Route::post('/login', 'LoginController@login')->name('login.perform');
+
+    // Route::get('/logout', 'LogoutController@getToken')->name('logout.getToken');
+    
 });
+
+Route::post('/logout', 'LogoutController@logout')->name('logout.perform');
+
     
     // Route::group(['middleware' => ['auth']], function() {
 /**
