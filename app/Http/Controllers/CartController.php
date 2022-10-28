@@ -143,7 +143,11 @@ class CartController extends Controller
             $cart->save();
         }
 
-        $productincart = Productincart::where('cartid', '=', $cart->cartid)->first();
+        $productincart = Productincart::where('cartid', '=', $cart->cartid)
+                                        ->where('productCode', '=', $product->productCode)
+        
+        
+        ->first();
 
         if ($productincart != null) {
         } else {
