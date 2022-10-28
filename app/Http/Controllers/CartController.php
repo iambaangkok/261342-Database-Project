@@ -50,9 +50,32 @@ class CartController extends Controller
      * @param  \App\Models\cart  $cart
      * @return \Illuminate\Http\Response
      */
-    public function show(cart $cart)
+    public function show(Request $request)
     {
-        //
+        // $productCode = $request["productCode"];
+        $remember_token = $request["remember_token"];
+        $user = User::where('remember_token', '=', $remember_token)->first();
+
+
+        $showcart = DB::table('Carts')
+
+            ->select('Products.ProductCode','Products.productName','Products.productLine', 
+                    'Products.productScale','Products.productVendor','Products.productDescription',
+                    ' productincarts.quantity','Products.MSRP'
+                    )
+
+            ->join('Products','Products.productCode','=','Productincarts.productCode')
+            ->join('Productincarts', 'Productincarts.cartid', '=', 'Carts.cartid')
+            ->join('Carts', 'Carts.id_user', '=', 'Users.id')
+
+            // ->where(['something' => 'something', 'otherThing' => 'otherThing'])
+
+            ->where('Users.remember_token', '=', $remember_token)
+
+
+            ->get();
+        
+        return $showcart;
     }
 
     /**
