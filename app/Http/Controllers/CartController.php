@@ -59,23 +59,21 @@ class CartController extends Controller
 
         $showcart = DB::table('Carts')
 
-            ->select('Products.ProductCode','Products.productName','Products.productLine', 
+
+            ->select('Products.productCode','Products.productName','Products.productLine', 
                     'Products.productScale','Products.productVendor','Products.productDescription',
-                    ' productincarts.quantity','Products.MSRP'
+                    'Productincarts.quantity','Products.MSRP'
                     )
-
-            ->join('Products','Products.productCode','=','Productincarts.productCode')
-            ->join('Productincarts', 'Productincarts.cartid', '=', 'Carts.cartid')
-            ->join('Carts', 'Carts.id_user', '=', 'Users.id')
-
-            // ->where(['something' => 'something', 'otherThing' => 'otherThing'])
+            ->join('users','users.id','=','carts.id_user')
+            ->join('productincarts', 'productincarts.cartid', '=', 'carts.cartid')
+            ->join('products','products.productCode','=','productincarts.productCode')
 
             ->where('Users.remember_token', '=', $remember_token)
-
-
             ->get();
-        
-        return $showcart;
+
+
+        return response()->json($showcart, 200);
+
     }
 
     /**
