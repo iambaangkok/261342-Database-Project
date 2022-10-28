@@ -129,8 +129,9 @@ class CartController extends Controller
         $user = User::where('remember_token', '=', $remember_token)->first();
         $product = Product::where('ProductCode', '=', $productCode)->first();
         $cart = Cart::where('id_user', '=', $user->id)->first();
-        $productincart = Productincart::where('cartid', '=', $cart->cartid);
-        // $productincart =Productincart::findeorFile($cart->cartid);
+        // $productincart = Productincart::where('cartid', '=', $cart->cartid)->first();
+        
+        // $productincart =Productincart::fineorFile($cart->cartid);
 
 
         if ($cart != null) {
@@ -140,6 +141,7 @@ class CartController extends Controller
             $cart->id_user = $user->id;
             $cart->save();
         }
+        $productincart = Productincart::where('cartid', '=', $cart->cartid)->first();
 
         if($productincart != null){
             $productincart->save();
@@ -149,8 +151,8 @@ class CartController extends Controller
             $product->quantityInStock = $product->quantityInStock - 1 ;
 
         }
-        $productincart->save();
-        $product->save();
+        // $productincart->save();
+        // $product->save();
         return response()->json($cart, 200);
         // return redirect()->back()->with('success', 'Product added to cart successfully!');
         // DB::transaction(function () use($user,$product,$cart,$productincart,$productCode){
