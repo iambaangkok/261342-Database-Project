@@ -8,7 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Productincart extends Model
 {
     protected $table = 'productincarts';
-	public $incrementing = false;
+	protected $primaryKey = 'id';
+	public $incrementing = true;
 	public $timestamps = false;
 
 	protected $fillable = [

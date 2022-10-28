@@ -14,9 +14,11 @@ class CreateProductincartsTable extends Migration
     public function up()
     {
         Schema::create('productincarts', function (Blueprint $table) {
+            $table->id();
             $table->integer('cartid');
             $table->string('productCode', 15);
-            $table->integer('quantity');
+            $table->integer('quantity')->default(0);
+
         });
     }
 

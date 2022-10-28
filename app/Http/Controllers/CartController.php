@@ -126,33 +126,42 @@ class CartController extends Controller
         $remember_token = $request["remember_token"];
 
 
+
         $user = User::where('remember_token', '=', $remember_token)->first();
         $product = Product::where('ProductCode', '=', $productCode)->first();
         $cart = Cart::where('id_user', '=', $user->id)->first();
         // $productincart = Productincart::where('cartid', '=', $cart->cartid)->first();
-        
+
         // $productincart =Productincart::fineorFile($cart->cartid);
 
 
         if ($cart != null) {
             $cart->save();
         } else {
-            $cart = new Cart();
-            $cart->id_user = $user->id;
+            // $cart = new Cart();
+            $cart  = Cart::create(['id_user' => $user->id]);
             $cart->save();
         }
+
         $productincart = Productincart::where('cartid', '=', $cart->cartid)->first();
 
-        if($productincart != null){
-            $productincart->save();
-        }else{
-            $productincart = new Productincart();
-            $productincart->quantity = $productincart->quantity + 1;
-            $product->quantityInStock = $product->quantityInStock - 1 ;
-
+        if ($productincart != null) {
+        } else {
+            // $productincart = new Productincart($cart->cartid, $product->productCode);
+            $productincart = Productincart::create(['cartid' => $cart->cartid,
+                                                        'productCode' =>  $product->productCode,
+                                                    'quantity' => 0]);
+            
+            // $productincart->cartid = $cart->cartid;
+            // $productincart->productCode = $product->productCode;
         }
-        // $productincart->save();
-        // $product->save();
+
+        $productincart->quantity = $productincart->quantity + 1;
+
+        $product->quantityInStock = $product->quantityInStock - 1;
+
+        $productincart->save();
+        $product->save();
         return response()->json($cart, 200);
         // return redirect()->back()->with('success', 'Product added to cart successfully!');
         // DB::transaction(function () use($user,$product,$cart,$productincart,$productCode){
