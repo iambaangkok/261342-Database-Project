@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Products; ## Wait Product
+use App\Models\Product; ## Wait Product
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\limit;
 
@@ -18,7 +18,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Products::all();
+        $products = Product::all();
         return  $products;
 
     }
@@ -61,7 +61,7 @@ class ProductController extends Controller
 
     public function store(Request $request)
     {
-        $product = new Products([
+        $product = new Product([
             'name' => $request->name,
             'description' => $request->description,
             'price' => $request->price,
@@ -79,7 +79,7 @@ class ProductController extends Controller
 
 
         $product->save();
-        $products = Products::all();
+        $products = Product::all();
         return view('viewproducts', ['products' => $products]);
     }
 
