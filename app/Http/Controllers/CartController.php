@@ -54,26 +54,29 @@ class CartController extends Controller
     {
         // $productCode = $request["productCode"];
         $remember_token = $request["remember_token"];
-        $user = User::where('remember_token', '=', $remember_token)->first();
+        // $user = User::where('remember_token', '=', $remember_token)->first();
 
 
         $showcart = DB::table('Carts')
-
-
-            ->select('Products.productCode','Products.productName','Products.productLine', 
-                    'Products.productScale','Products.productVendor','Products.productDescription',
-                    'Productincarts.quantity','Products.MSRP'
-                    )
-            ->join('users','users.id','=','carts.id_user')
+            ->select(
+                'Products.productCode',
+                'Products.productName',
+                'Products.productLine',
+                'Products.productScale',
+                'Products.productVendor',
+                'Products.productDescription',
+                'Productincarts.quantity',
+                'Products.MSRP'
+            )
+            ->join('users', 'users.id', '=', 'carts.id_user')
             ->join('productincarts', 'productincarts.cartid', '=', 'carts.cartid')
-            ->join('products','products.productCode','=','productincarts.productCode')
+            ->join('products', 'products.productCode', '=', 'productincarts.productCode')
 
             ->where('Users.remember_token', '=', $remember_token)
             ->get();
 
 
         return response()->json($showcart, 200);
-
     }
 
     /**
@@ -126,17 +129,44 @@ class CartController extends Controller
      * Paramiter in put of cart is Token for idntity $remember_token
      * $id is Productcode
      */
-    public function remove($id, $remember_token)
+    public function remove(Request $request)
     {
 
-        $cart = Cart::findOrFail($id);
-        $product = Product::where('name', '=', $cart->name)->first();
-        DB::transaction(function () use ($product, $cart) {
-            $product->stock = $product->stock + $cart->quantity;
+        $productCode = $request["productCode"];
+        $remember_token = $request["remember_token"];
+
+    
+
+
+        $user = User::where('remember_token', '=', $remember_token)->first();
+        $product = Product::where('ProductCode', '=', $productCode)->first();
+        $cart = Cart::where('id_user', '=', $user->id)->first();
+
+
+        $productincart = Productincart::where('productCode', '=', $productCode)
+            ->where('cartid', '=', $cart->cartid)->first();
+
+
+        if ($productincart->quantity > 0) {
+            $productincart->quantity = $productincart->quantity - 1;
+            $product->quantityInStock = $product->quantityInStock + 1;
+            $productincart->save();
             $product->save();
-            $cart->delete();
-        });
-        return back()->with('success', 'Product removed successfully');
+            if ($productincart->quantity == 0) {
+                $productincart  = Productincart::where('productCode', '=', $productCode)
+                    ->delete();
+                $productincart->save();
+            }
+        } else {
+            $productincart  = Productincart::where('productCode', '=', $productCode)
+                ->delete();
+            $productincart->save();
+        }
+
+
+        return response()->json($productincart, 200);
+
+
     }
 
 
@@ -165,18 +195,20 @@ class CartController extends Controller
         }
 
         $productincart = Productincart::where('cartid', '=', $cart->cartid)
-                                        ->where('productCode', '=', $product->productCode)
-        
-        
-        ->first();
+            ->where('productCode', '=', $product->productCode)
+
+
+            ->first();
 
         if ($productincart != null) {
         } else {
             // $productincart = new Productincart($cart->cartid, $product->productCode);
-            $productincart = Productincart::create(['cartid' => $cart->cartid,
-                                                        'productCode' =>  $product->productCode,
-                                                    'quantity' => 0]);
-            
+            $productincart = Productincart::create([
+                'cartid' => $cart->cartid,
+                'productCode' =>  $product->productCode,
+                'quantity' => 0
+            ]);
+
             // $productincart->cartid = $cart->cartid;
             // $productincart->productCode = $product->productCode;
         }

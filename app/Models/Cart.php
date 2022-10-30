@@ -16,6 +16,7 @@ class Cart extends Model
      *  id_user is remember_token
      */
     protected $fillable = [
+        // 'cartid',
         'id_user'
     ];
 
