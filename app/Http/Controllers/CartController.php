@@ -155,7 +155,7 @@ class CartController extends Controller
             if ($productincart->quantity == 0) {
                 $productincart  = Productincart::where('productCode', '=', $productCode)
                     ->delete();
-                $productincart->save();
+                // $productincart->save();
             }
         } else {
             $productincart  = Productincart::where('productCode', '=', $productCode)
@@ -164,7 +164,7 @@ class CartController extends Controller
         }
 
 
-        return response()->json($productincart, 200);
+        return response()->json("delete success", 200);
 
 
     }
