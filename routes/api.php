@@ -45,7 +45,7 @@ Route::group(['namespace' => 'App\Http\Controllers'], function()
     Route::post('/login', 'LoginController@login')->name('login.perform');
     Route::post('/orders' , 'OrderController@orderall')->name('orders.orderall');
     Route::get('/order','OrderController@orderdetail')->name('order.orderdetail');
-
+    Route::get('/search','ProductController@searchproduct')->name('search.product');
     // Route::get('/logout', 'LogoutController@getToken')->name('logout.getToken');
     
 });
