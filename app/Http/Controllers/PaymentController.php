@@ -86,6 +86,12 @@ class PaymentController extends Controller
                     [ $thisOrderNum, $product->productCode, $product->quantity ,$result->buyPrice ,$i]);
                 $i = $i+1;
             }
+
+
+            //ลบ cart
+            $cart = Cart::where('id_user', '=', $user->id)->delete();
+
+
             return response()->json("payment success", 200);;
         }else{
             // return $duplicateCheckNumber->first();
