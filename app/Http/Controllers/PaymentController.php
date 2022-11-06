@@ -49,17 +49,31 @@ class PaymentController extends Controller
                 
                 $code = $products->productCode;
                 $result = Product::where('productCode', '=' ,$code)->first();
-                try {
-                    DB::transaction(function () use ($result,$products) {
-                        $quantity = $products->quantity;
-                        $productInstock = $result->quantityInStock;  
-                        $result->quantityInStock = $productInstock - $quantity;
-                        $result->save();
-                    });
-                } catch (Throwable $e){
+                $fail = false;
+
+                /////////// 
+                DB::beginTransaction();
+
+                $quantity = $products->quantity;
+                $productInstock = $result->quantityInStock;
+                
+                if($productInstock - $quantity < 0){
+                    DB::rollBack();
+                    $fail = true;
+                    return response()->json("payment failed, transaction failed, possibly not enough product in stock", 409);
+                }
+
+                $result->quantityInStock = $productInstock - $quantity;
+                $result->save();
+
+                DB::commit();
+                ///////////
+
+                if($fail){
                     return response()->json("payment failed, transaction failed, possibly not enough product in stock", 409);
                 }
             }
+            
 
             // เพิ่ม rec ใน payment
             // DB::insert('insert into payments (customerNumber, checkNumber, paymentDate, amount) values (?, ?, ?, ?)'
