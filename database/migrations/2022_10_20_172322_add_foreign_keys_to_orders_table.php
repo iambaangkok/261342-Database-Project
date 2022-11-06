@@ -28,6 +28,7 @@ class AddForeignKeysToOrdersTable extends Migration
     {
         Schema::table('orders', function (Blueprint $table) {
             $table->dropForeign('orders_ibfk_1');
+            $table->dropForeign('orders_ibfk_2');
         });
     }
 }
