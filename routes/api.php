@@ -60,6 +60,7 @@ Route::group(['namespace' => 'App\Http\Controllers'], function()
     Route::post('/addToCart', 'CartController@addToCart')->name('cart.addToCart');
     Route::post('/showcart','CartController@show')->name('cart.show');
     Route::post('/removeproductincart','CartController@remove')->name('cart.remove');
+    Route::post('/removeall','CartController@removeall')->name('cart.removeall');
     
         // Route::delete('/remove-from-cart/{id,remember_token}', 'ProductController@remove')->name('remove.from.cart');
 

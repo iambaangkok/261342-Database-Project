@@ -135,11 +135,9 @@ class CartController extends Controller
         $productCode = $request["productCode"];
         $remember_token = $request["remember_token"];
 
-    
-
 
         $user = User::where('remember_token', '=', $remember_token)->first();
-        $product = Product::where('ProductCode', '=', $productCode)->first();
+        // $product = Product::where('ProductCode', '=', $productCode)->first();
         $cart = Cart::where('id_user', '=', $user->id)->first();
 
 
@@ -149,13 +147,13 @@ class CartController extends Controller
 
         if ($productincart->quantity > 0) {
             $productincart->quantity = $productincart->quantity - 1;
-            $product->quantityInStock = $product->quantityInStock + 1;
+            // $product->quantityInStock = $product->quantityInStock + 1;
             $productincart->save();
-            $product->save();
+            // $product->save();
             if ($productincart->quantity == 0) {
                 $productincart  = Productincart::where('productCode', '=', $productCode)
                     ->delete();
-                // $productincart->save();
+                
             }
         } else {
             $productincart  = Productincart::where('productCode', '=', $productCode)
@@ -163,11 +161,33 @@ class CartController extends Controller
             $productincart->save();
         }
 
-
         return response()->json("delete success", 200);
-
-
     }
+    public function removeall(Request $request)
+    {
+        $productCode = $request["productCode"];
+        $remember_token = $request["remember_token"];
+
+        $user = User::where('remember_token', '=', $remember_token)->first();
+        $cart = Cart::where('id_user', '=', $user->id)->first();
+
+
+        $productincart  = Productincart::where('productCode', '=', $productCode)
+            ->delete();
+    
+        
+        // $productincart  = Productincart::where('productCode', '=', $productCode)
+        //     ->delete();
+
+
+        return response()->json("deleteall success", 200);
+
+        // return response()->json("deleteall success", 200);
+    }
+
+
+
+
 
 
 
@@ -215,10 +235,10 @@ class CartController extends Controller
             // $productincart->productCode = $product->productCode;
         }
 
-        if($quantity != 0){
+        if ($quantity != 0) {
             $productincart->quantity = $productincart->quantity + $quantity;
-        }else{
-            $productincart->quantity = $productincart->quantity + 1 ;
+        } else {
+            $productincart->quantity = $productincart->quantity + 1;
         }
 
 
@@ -228,5 +248,4 @@ class CartController extends Controller
         // $product->save();
         return response()->json($productincart, 200);
     }
-
 }
