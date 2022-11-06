@@ -139,7 +139,7 @@ class ProductController extends Controller
 
         
 
-        $search_product = Product::where('productCode', 'like',  $key . '%')
+        $search_product = Product::where('productCode', 'like', '%'. $key . '%')
             ->orwhere('productVendor', 'like', '%'. $key . '%')
             ->get();
 
