@@ -218,7 +218,7 @@ class CartController extends Controller
                 $productincart = Productincart::create([
                     'cartid' => $cart->cartid,
                     'productCode' =>  $product->productCode,
-                    'quantity' => 1
+                    'quantity' => 0
                 ]);
 
                 // $productincart->cartid = $cart->cartid;
