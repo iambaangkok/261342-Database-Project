@@ -45,12 +45,16 @@ class PaymentController extends Controller
 
             //ลบจน.product ตามสิ่งที่อยู่ใน cart (ตาราง productincart)
             foreach ($productIncart as $products){
+                
                 $code = $products->productCode;
                 $result = Product::where('productCode', '=' ,$code)->first();
-                $productInstock = $result->quantityInStock;
-                Product::where('productCode', '=' ,$code)
-                    ->update(['quantityInStock' => $productInstock-$products->quantity]);
 
+                DB::transaction(function () use ($result,$products) {
+                    $quantity = $products->quantity;
+                    $productInstock = $result->quantityInStock;  
+                    $result->quantityInStock = $productInstock - $quantity;
+                    $result->save();
+                });
             }
 
             // เพิ่ม rec ใน payment
@@ -72,7 +76,7 @@ class PaymentController extends Controller
                     [ $thisOrderNum, $product->productCode, $product->quantity ,$result->buyPrice ,$i]);
                 $i = $i+1;
             }
-            return response()->json("payment success", 200);
+            return response()->json("payment success", 200);;
         }else{
             // return $duplicateCheckNumber->first();
             return response()->json("payment failed, duplicate check number", 422);
