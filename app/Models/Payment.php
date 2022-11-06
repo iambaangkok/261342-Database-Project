@@ -41,6 +41,10 @@ class Payment extends Model
 		'amount'
 	];
 
+	public function order(){
+		return $this->hasOne(Order::class, 'checkNumber');
+	}
+
 	public function customer()
 	{
 		return $this->belongsTo(Customer::class, 'customerNumber');

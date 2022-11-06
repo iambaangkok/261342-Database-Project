@@ -21,6 +21,7 @@ class CreateOrdersTable extends Migration
             $table->string('status', 15);
             $table->text('comments')->nullable();
             $table->integer('customerNumber')->index('customerNumber');
+            $table->string('checkNumber', 50)->nullable();
         });
     }
 

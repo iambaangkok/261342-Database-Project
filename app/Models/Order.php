@@ -50,8 +50,13 @@ class Order extends Model
 		'shippedDate',
 		'status',
 		'comments',
-		'customerNumber'
+		'customerNumber',
+		'checkNumber'
 	];
+
+	public function payment(){
+		return $this->belongsTo(Payment::class, 'checkNumber');
+	}
 
 	public function customer()
 	{

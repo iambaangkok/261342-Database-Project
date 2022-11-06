@@ -15,6 +15,7 @@ class AddForeignKeysToOrdersTable extends Migration
     {
         Schema::table('orders', function (Blueprint $table) {
             $table->foreign(['customerNumber'], 'orders_ibfk_1')->references(['customerNumber'])->on('customers');
+            $table->foreign(['customerNumber','checkNumber'], 'orders_ibfk_2')->references(['customerNumber','checkNumber'])->on('payments');
         });
     }
 
