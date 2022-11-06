@@ -88,10 +88,8 @@ class PaymentController extends Controller
             }
 
 
-            //ลบ cart
-            $cart = Cart::where('id_user', '=', $user->id)->delete();
-
-
+            //ลบ productincart
+            $deleteAllproductincart = Productincart::where('id_user', '=', $user->id)->delete();
             return response()->json("payment success", 200);;
         }else{
             // return $duplicateCheckNumber->first();
