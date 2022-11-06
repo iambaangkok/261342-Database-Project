@@ -175,6 +175,8 @@ class CartController extends Controller
     {
         $productCode = $request["productCode"];
         $remember_token = $request["remember_token"];
+        $quantity = $request["quantity"];
+
 
 
 
@@ -213,65 +215,13 @@ class CartController extends Controller
             // $productincart->productCode = $product->productCode;
         }
 
-        $productincart->quantity = $productincart->quantity + 1;
+        $productincart->quantity = $productincart->quantity + $quantity;
 
-        $product->quantityInStock = $product->quantityInStock - 1;
+        // $product->quantityInStock = $product->quantityInStock - 1;
 
         $productincart->save();
-        $product->save();
+        // $product->save();
         return response()->json($cart, 200);
-        // return redirect()->back()->with('success', 'Product added to cart successfully!');
-        // DB::transaction(function () use($user,$product,$cart,$productincart,$productCode){
-
-        //     if($cart!= null){
-        //         $cart->save();
-        //     }else{
-        //         $cart = new Cart();
-        //         $cart->cartid = $cart->cartid + 1 ;
-        //         $cart->id_user = $user->id;
-        //         $cart->save();
-
-        //     }
-
-        //     if($productincart != null){
-        //         $productincart->quantity = $productincart->quantity + 1;
-        //         $productincart->productCode = $productCode;
-        //         $productincart->save();
-        //     }else{
-        //         $productincart = new Productincart();
-        //         $productincart->cartid = $cart->cartid;
-        //         $productincart->ProductCode = $productCode;
-        //         $productincart->quantity = $productincart->quantity + 1;
-        //     }
-
-        //     $product->quantity = $product->quantity - 1 ;
-        //     $product->save();
-
-        //     return redirect()->back()->with('success', 'Product added to cart successfully!');
-        // });
-
-
-
-        // $product = Product::findOrFail($id);
-        // $cart = Cart::where('name', '=', $product->name)->first();
-        // DB::transaction(function () use ($product, $cart) {
-        //     if ($cart != null) {
-        //         $cart->quantity = $cart->quantity + 1;
-        //         $cart->save();
-        //     } else {
-        //         $cart = new Cart();
-        //         $cart->name = $product->name;
-        //         $cart->quantity = 1;
-        //         // $cart->price = $product->price;
-        //         // $cart->image = $product->image;
-
-        //         $cart->save();
-        //     }
-        //     $product->quantityInStock = $product->quantityInStock - 1;
-        //     $product->save();
-        // });
-
-        // return redirect()->back()->with('success', 'Product added to cart successfully!');
-
     }
+
 }
