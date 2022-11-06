@@ -215,7 +215,12 @@ class CartController extends Controller
             // $productincart->productCode = $product->productCode;
         }
 
-        $productincart->quantity = $productincart->quantity + $quantity;
+        if($quantity != 0){
+            $productincart->quantity = $productincart->quantity + $quantity;
+        }else{
+            $productincart->quantity = $productincart->quantity + 1 ;
+        }
+
 
         // $product->quantityInStock = $product->quantityInStock - 1;
 
