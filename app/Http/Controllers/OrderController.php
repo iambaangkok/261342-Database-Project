@@ -23,4 +23,12 @@ class OrderController extends Controller
         return $order;
 
     }
+
+    public function orderdetail(Request $request)
+    {
+        $allOrder = DB::select('select productCode,quantityOrdered, priceEach from orderdetails where orderNumber=?', [$request['orderNumber']]);
+        
+        return response()->json($allOrder ,200);
+    }
+
 }
