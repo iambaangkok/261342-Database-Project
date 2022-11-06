@@ -7,6 +7,7 @@ use App\Models\Cart;
 use App\Models\User;
 use App\Models\Productincart;
 use App\Models\Customer;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
@@ -40,11 +41,25 @@ class PaymentController extends Controller
                 ->update(['creditLimit' => $customer->creditLimit - $totalAmount]);
             DB::insert('insert into payments (customerNumber, checkNumber, paymentDate, amount) values (?, ?, ?, ?)'
                         , [ $customer->customerNumber, $checkNumber,$requiredDate ,$totalAmount]);
+            foreach ($productIncart){
+                $code = $productInCart->productCode;
+                $result = Product::where('productCode', '=' ,$code)->first();
+			}
+            foreach ($productIncart as $products){
+                $code = $products->productCode;
+                $result = Product::where('productCode', '=' ,$code)->first();
+                $productInstock = $result->quantityInStock;
+                Product::where('productCode', '=' ,$code)
+                    ->update(['quantityInStock' => $productInstock-$products->quantity]);
+            }
             return response()->json("payment success", 200);
         }else{
             return response()->json("payment failed", 422);
         }
-        return $productIncart;
+
+        
+       
+        return $productInstock;
 
     }
 }
