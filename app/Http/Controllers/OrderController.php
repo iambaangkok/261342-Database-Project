@@ -16,11 +16,11 @@ class OrderController extends Controller
         
         $user = User::where('remember_token', '=' , $remember_token)->first();
         $customer = Customer::where('customerNumber', '=', $user->customerNumber)->first();
-        $page = Order::where('customerNumber', '=',$customer->customerNumber)
-                    ->paginate(15);
+        $order = Order::where('customerNumber', '=',$customer->customerNumber)
+                ->get();
         ;
 
-        return $page;
+        return $order;
 
     }
 }
