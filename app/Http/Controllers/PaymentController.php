@@ -14,6 +14,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\DB;
+use Throwable;
 
 class PaymentController extends Controller
 {
@@ -48,13 +49,16 @@ class PaymentController extends Controller
                 
                 $code = $products->productCode;
                 $result = Product::where('productCode', '=' ,$code)->first();
-
-                DB::transaction(function () use ($result,$products) {
-                    $quantity = $products->quantity;
-                    $productInstock = $result->quantityInStock;  
-                    $result->quantityInStock = $productInstock - $quantity;
-                    $result->save();
-                });
+                try {
+                    DB::transaction(function () use ($result,$products) {
+                        $quantity = $products->quantity;
+                        $productInstock = $result->quantityInStock;  
+                        $result->quantityInStock = $productInstock - $quantity;
+                        $result->save();
+                    });
+                } catch (Throwable $e){
+                    return response()->json("payment failed, transaction failed, possibly not enough product in stock", 409);
+                }
             }
 
             // เพิ่ม rec ใน payment
@@ -89,7 +93,7 @@ class PaymentController extends Controller
 
 
             //ลบ productincart
-            $deleteAllproductincart = Productincart::where('id_user', '=', $user->id)->delete();
+            $deleteAllproductincart = Productincart::where('cartid', '=', $cart->cartid)->delete();
             return response()->json("payment success", 200);;
         }else{
             // return $duplicateCheckNumber->first();

@@ -7,6 +7,7 @@ use   App\Http\Requests\RegisterRequest;
 use Illuminate\Support\Facades\DB;
 use   App\Models\User;
 use   App\Models\Customer;
+use App\Models\Cart;
 
 class RegisterController extends Controller
 {
@@ -62,6 +63,8 @@ class RegisterController extends Controller
             'password' => $data['password'],
             'password_confirmation' => $data['password_confirmation'],
         ]);
+
+        $cart  = Cart::create(['id_user' => $user->id]);
 
         return response()->json($user, 200);
     }
