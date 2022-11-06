@@ -41,10 +41,6 @@ class PaymentController extends Controller
                 ->update(['creditLimit' => $customer->creditLimit - $totalAmount]);
             DB::insert('insert into payments (customerNumber, checkNumber, paymentDate, amount) values (?, ?, ?, ?)'
                         , [ $customer->customerNumber, $checkNumber,$requiredDate ,$totalAmount]);
-            foreach ($productIncart){
-                $code = $productInCart->productCode;
-                $result = Product::where('productCode', '=' ,$code)->first();
-			}
             foreach ($productIncart as $products){
                 $code = $products->productCode;
                 $result = Product::where('productCode', '=' ,$code)->first();
