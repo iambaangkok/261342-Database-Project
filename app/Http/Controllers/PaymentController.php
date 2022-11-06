@@ -7,6 +7,9 @@ use App\Models\Cart;
 use App\Models\User;
 use App\Models\Productincart;
 use App\Models\Customer;
+use App\Models\Product;
+use App\Models\Order;
+use App\Models\Orderdetail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
@@ -27,24 +30,56 @@ class PaymentController extends Controller
         $productIncart = Productincart::where('cartid', '=', $cart->cartid)->get();
 
         /**
-         * 200 OK Requirement :
-         * Customer creditLimit	>= totalAmount
+         * 200 OK Requirement
          * then
-         * ลบเงินใน creditLimit ตาม totalAmount
          * เพิ่ม rec ใน payment
          * ลบจน.product ตามสิ่งที่อยู่ใน cart (ตาราง productincart)
+         * เพิ่ม rec ใน orders, orderdetail
          */
 
-        if($customer->creditLimit >= $totalAmount && $customer->creditLimit != null){
-            Customer::where('customerNumber',$customer->customerNumber)
-                ->update(['creditLimit' => $customer->creditLimit - $totalAmount]);
-            DB::insert('insert into payments (customerNumber, checkNumber, paymentDate, amount) values (?, ?, ?, ?)'
-                        , [ $customer->customerNumber, $checkNumber,$requiredDate ,$totalAmount]);
-            return response()->json("payment success", 200);
-        }else{
-            return response()->json("payment failed", 422);
-        }
-        return $productIncart;
+        //$Check = DB::table('payments')->where('checkNumber', $checkNumber)->first();
+        $duplicateCheckNumber = payment::where('checkNumber', '=', $checkNumber)->first();
+        if(!$duplicateCheckNumber){
+        //if($Check == null){
 
+
+            //ลบจน.product ตามสิ่งที่อยู่ใน cart (ตาราง productincart)
+            foreach ($productIncart as $products){
+                
+                $code = $products->productCode;
+                $result = Product::where('productCode', '=' ,$code)->first();
+
+                DB::transaction(function () use ($result,$products) {
+                    $quantity = $products->quantity;
+                    $productInstock = $result->quantityInStock;  
+                    $result->quantityInStock = $productInstock - $quantity;
+                    $result->save();
+                });
+            }
+
+            // เพิ่ม rec ใน payment
+            DB::insert('insert into payments (customerNumber, checkNumber, paymentDate, amount) values (?, ?, ?, ?)'
+                    , [ $customer->customerNumber, $checkNumber,$requiredDate ,$totalAmount]);
+        
+            // เพิ่ม rec ใน orders
+            $lastOrder = DB::table('orders')->get()->last();
+            $thisOrderNum = $lastOrder->orderNumber+1;
+            DB::insert('insert into orders (orderNumber, orderDate, requiredDate,shippedDate, status,comments, customerNumber) values (?,?,?,?,?,?,?)', 
+                [ $thisOrderNum,  now()->format('Y-m-d'),$requiredDate, NULL, 'In Process',NULL ,$customer['customerNumber']]);
+
+            // เพิ่ม rec ใน orderdetail
+            $i = 1;
+            foreach ($productIncart as $product)  {
+                $code = $products->productCode;
+                $result = Product::where('productCode', '=' ,$code)->first();
+                DB::insert('insert into orderdetails (orderNumber, productCode, quantityOrdered, priceEach, orderLineNumber) values (?, ?, ?, ?, ?)', 
+                    [ $thisOrderNum, $product->productCode, $product->quantity ,$result->buyPrice ,$i]);
+                $i = $i+1;
+            }
+            return response()->json("payment success", 200);;
+        }else{
+            // return $duplicateCheckNumber->first();
+            return response()->json("payment failed, duplicate check number", 422);
+        }
     }
 }
