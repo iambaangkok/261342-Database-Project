@@ -21,7 +21,7 @@ class PaymentController extends Controller
     {
         $remember_token = $request["remember_token"];
         $checkNumber =  $request["checkNumber"];
-        $requiredDate =  $request["requiredDate"];
+        // $requiredDate =  $request["requiredDate"];
         $totalAmount =  $request["totalAmount"];
 
         $user = User::where('remember_token', '=', $remember_token)->first();
@@ -58,15 +58,25 @@ class PaymentController extends Controller
             }
 
             // เพิ่ม rec ใน payment
+            // DB::insert('insert into payments (customerNumber, checkNumber, paymentDate, amount) values (?, ?, ?, ?)'
+            //         , [ $customer->customerNumber, $checkNumber,$requiredDate ,$totalAmount]);
+
+            //ฉบับ น๊นหน๊น
             DB::insert('insert into payments (customerNumber, checkNumber, paymentDate, amount) values (?, ?, ?, ?)'
-                    , [ $customer->customerNumber, $checkNumber,$requiredDate ,$totalAmount]);
+                    , [ $customer->customerNumber, $checkNumber,now()->format('Y-m-d') ,$totalAmount]);
         
+            //
             // เพิ่ม rec ใน orders
             $lastOrder = DB::table('orders')->get()->last();
             $thisOrderNum = $lastOrder->orderNumber+1;
-            DB::insert('insert into orders (orderNumber, orderDate, requiredDate,shippedDate, status,comments, customerNumber) values (?,?,?,?,?,?,?)', 
-                [ $thisOrderNum,  now()->format('Y-m-d'),$requiredDate, NULL, 'In Process',NULL ,$customer['customerNumber']]);
+            // DB::insert('insert into orders (orderNumber, orderDate, requiredDate,shippedDate, status,comments, customerNumber) values (?,?,?,?,?,?,?)', 
+            //     [ $thisOrderNum,  now()->format('Y-m-d'),$requiredDate, NULL, 'In Process',NULL ,$customer['customerNumber']]);
 
+
+            //ฉบับ น๊นหน๊น
+            DB::insert('insert into orders (orderNumber, orderDate, requiredDate,shippedDate, status,comments, customerNumber) values (?,?,?,?,?,?,?)', 
+            [ $thisOrderNum,  now()->format('Y-m-d'),now()->format('Y-m-d'), NULL, 'In Process',NULL ,$customer['customerNumber']]);
+            //
             // เพิ่ม rec ใน orderdetail
             $i = 1;
             foreach ($productIncart as $product)  {
