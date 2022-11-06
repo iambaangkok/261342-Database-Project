@@ -153,7 +153,6 @@ class CartController extends Controller
             if ($productincart->quantity == 0) {
                 $productincart  = Productincart::where('productCode', '=', $productCode)
                     ->delete();
-                
             }
         } else {
             $productincart  = Productincart::where('productCode', '=', $productCode)
@@ -174,15 +173,8 @@ class CartController extends Controller
 
         $productincart  = Productincart::where('productCode', '=', $productCode)
             ->delete();
-    
-        
-        // $productincart  = Productincart::where('productCode', '=', $productCode)
-        //     ->delete();
-
 
         return response()->json("deleteall success", 200);
-
-        // return response()->json("deleteall success", 200);
     }
 
 
@@ -207,45 +199,87 @@ class CartController extends Controller
 
         // $productincart =Productincart::fineorFile($cart->cartid);
 
+        DB::transaction(function () use ($product, $cart,$user,$quantity) {
+            if ($cart != null) {
+                $cart->save();
+            } else {
+                // $cart = new Cart();
+                $cart  = Cart::create(['id_user' => $user->id]);
+                $cart->save();
+            }
 
-        if ($cart != null) {
-            $cart->save();
-        } else {
-            // $cart = new Cart();
-            $cart  = Cart::create(['id_user' => $user->id]);
-            $cart->save();
-        }
+            $productincart = Productincart::where('cartid', '=', $cart->cartid)
+                ->where('productCode', '=', $product->productCode)
+                ->first();
 
-        $productincart = Productincart::where('cartid', '=', $cart->cartid)
-            ->where('productCode', '=', $product->productCode)
+            if ($productincart != null) {
+            } else {
+                // $productincart = new Productincart($cart->cartid, $product->productCode);
+                $productincart = Productincart::create([
+                    'cartid' => $cart->cartid,
+                    'productCode' =>  $product->productCode,
+                    'quantity' => 1
+                ]);
 
+                // $productincart->cartid = $cart->cartid;
+                // $productincart->productCode = $product->productCode;
+            }
 
-            ->first();
-
-        if ($productincart != null) {
-        } else {
-            // $productincart = new Productincart($cart->cartid, $product->productCode);
-            $productincart = Productincart::create([
-                'cartid' => $cart->cartid,
-                'productCode' =>  $product->productCode,
-                'quantity' => 1
-            ]);
-
-            // $productincart->cartid = $cart->cartid;
-            // $productincart->productCode = $product->productCode;
-        }
-
-        if ($quantity != 0) {
-            $productincart->quantity = $productincart->quantity + $quantity;
-        } else {
-            $productincart->quantity = $productincart->quantity + 1;
-        }
+            if ($quantity != 0) {
+                $productincart->quantity = $productincart->quantity + $quantity;
+            } else {
+                $productincart->quantity = $productincart->quantity + 1;
+            }
 
 
-        // $product->quantityInStock = $product->quantityInStock - 1;
+            // $product->quantityInStock = $product->quantityInStock - 1;
 
-        $productincart->save();
-        // $product->save();
-        return response()->json($productincart, 200);
+            $productincart->save();
+            // $product->save();
+            
+        });
+        return response()->json("add to productincart success", 200);
+
+        // if ($cart != null) {
+        //     $cart->save();
+        // } else {
+        //     // $cart = new Cart();
+        //     $cart  = Cart::create(['id_user' => $user->id]);
+        //     $cart->save();
+        // }
+
+        // $productincart = Productincart::where('cartid', '=', $cart->cartid)
+        //     ->where('productCode', '=', $product->productCode)
+        //     ->first();
+
+        // if ($productincart != null) {
+        // } else {
+        //     // $productincart = new Productincart($cart->cartid, $product->productCode);
+        //     $productincart = Productincart::create([
+        //         'cartid' => $cart->cartid,
+        //         'productCode' =>  $product->productCode,
+        //         'quantity' => 1
+        //     ]);
+
+        //     // $productincart->cartid = $cart->cartid;
+        //     // $productincart->productCode = $product->productCode;
+        // }
+
+        // if ($quantity != 0) {
+        //     $productincart->quantity = $productincart->quantity + $quantity;
+        // } else {
+        //     $productincart->quantity = $productincart->quantity + 1;
+        // }
+
+
+        // // $product->quantityInStock = $product->quantityInStock - 1;
+
+        // $productincart->save();
+        // // $product->save();
+        // return response()->json($productincart, 200);
     }
+
+
+
+
 }
