@@ -89,10 +89,13 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function showdetail(Request $request)
     {
-        //
+        $productCode = $request["productCode"]; 
+        $product =  Product::where('productCode','=',$productCode)->first();
+        return response()->json($product ,200);
     }
+
 
     /**
      * Show the form for editing the specified resource.
