@@ -3,84 +3,48 @@
 namespace App\Http\Controllers;
 
 use App\Models\Payment;
-use App\Http\Requests\StorePaymentRequest;
-use App\Http\Requests\UpdatePaymentRequest;
+use App\Models\Cart;
+use App\Models\User;
+use App\Models\Productincart;
+use App\Models\Customer;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\DB;
 
 class PaymentController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    public function payment(Request $request)
     {
-        //
-    }
+        $remember_token = $request["remember_token"];
+        $checkNumber =  $request["checkNumber"];
+        $requiredDate =  $request["requiredDate"];
+        $totalAmount =  $request["totalAmount"];
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
+        $user = User::where('remember_token', '=', $remember_token)->first();
+        $customer = Customer::where('customerNumber', '=', $user->customerNumber)->first();
+        $cart = Cart::where('id_user', '=', $user->id)->first();
+        $productIncart = Productincart::where('cartid', '=', $cart->cartid)->get();
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\StorePaymentRequest  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(StorePaymentRequest $request)
-    {
-        //
-    }
+        /**
+         * 200 OK Requirement :
+         * Customer creditLimit	>= totalAmount
+         * then
+         * ลบเงินใน creditLimit ตาม totalAmount
+         * เพิ่ม rec ใน payment
+         * ลบจน.product ตามสิ่งที่อยู่ใน cart (ตาราง productincart)
+         */
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Payment  $payment
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Payment $payment)
-    {
-        //
-    }
+        // if($customer->creditLimit >= $totalAmount && $customer->creditLimit != null){
+        //     Customer::where('customerNumber',$customer->customerNumber)
+        //         ->update(['creditLimit' => $customer->creditLimit - $totalAmount]);
+        //     DB::insert('insert into payments (customerNumber, checkNumber, paymentDate, amount) values (?, ?, ?, ?)'
+        //                 , [ $customer->customerNumber, $checkNumber,$requiredDate ,$totalAmount]);
+        //     return response()->json("payment success", 200);
+        // }else{
+        //     return response()->json("payment failed", 422);
+        // }
+        return $productIncart;
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Payment  $payment
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Payment $payment)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\UpdatePaymentRequest  $request
-     * @param  \App\Models\Payment  $payment
-     * @return \Illuminate\Http\Response
-     */
-    public function update(UpdatePaymentRequest $request, Payment $payment)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Payment  $payment
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Payment $payment)
-    {
-        //
     }
 }
