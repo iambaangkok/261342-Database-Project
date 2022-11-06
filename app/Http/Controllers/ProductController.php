@@ -20,7 +20,6 @@ class ProductController extends Controller
     {
         $products = Product::all();
         return  $products;
-
     }
 
     /**
@@ -32,17 +31,19 @@ class ProductController extends Controller
     {
         return view('createproduct');
     }
-/**
- * 
- * @return http://127.0.0.1:8000/products?page=  n: R to 1 - 11
- */
+    /**
+     * 
+     * @return http://127.0.0.1:8000/products?page=  n: R to 1 - 11
+     */
     public function pagination()
     {
         $page = DB::table('Products')
             ->Paginate(
-                $perPage = 12 , $columns = ['*'] , $pageName ='page'
+                $perPage = 12,
+                $columns = ['*'],
+                $pageName = 'page'
             );
-        
+
 
         return $page;
     }
@@ -91,9 +92,9 @@ class ProductController extends Controller
      */
     public function showdetail(Request $request)
     {
-        $productCode = $request["productCode"]; 
-        $product =  Product::where('productCode','=',$productCode)->first();
-        return response()->json($product ,200);
+        $productCode = $request["productCode"];
+        $product =  Product::where('productCode', '=', $productCode)->first();
+        return response()->json($product, 200);
     }
 
 
@@ -129,5 +130,21 @@ class ProductController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function searchproduct(Request $request)
+    {
+        $key = $request["searchKey"];
+
+
+        
+
+        $search_product = Product::where('productCode', 'like',  $key . '%')
+            ->orwhere('productVendor', 'like', '%'. $key . '%')
+            ->get();
+
+       
+
+        return response()->json($search_product, 200);
     }
 }
