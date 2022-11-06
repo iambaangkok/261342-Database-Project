@@ -26,6 +26,9 @@ class RegisterController extends Controller
         $data = $request->all();
 
         $customerCheck = DB::table('customers')->where('customerName', $data['customerName'])->first();
+        $employee = DB::table('employees')->inRandomOrder()->limit(1)->first();
+        //dd($employee);
+        $randomCredit = random_int(0, 200000);
         //dd($customerCheck);
         if ($customerCheck == null):
             $customer = Customer::create([
@@ -39,7 +42,9 @@ class RegisterController extends Controller
                 'city' => $data['city'],
                 'state' => $data['state'],
                 'postalCode' => $data['postalCode'],
-                'country' => $data['country']
+                'country' => $data['country'],
+                'salesRepEmployeeNumber' => $employee->employeeNumber,
+                'creditLimit' => $randomCredit
             ]);
             $customerCheck = DB::table('customers')->where('customerName', $data['customerName'])->first();
         endif;
