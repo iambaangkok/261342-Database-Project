@@ -35,15 +35,15 @@ class PaymentController extends Controller
          * ลบจน.product ตามสิ่งที่อยู่ใน cart (ตาราง productincart)
          */
 
-        // if($customer->creditLimit >= $totalAmount && $customer->creditLimit != null){
-        //     Customer::where('customerNumber',$customer->customerNumber)
-        //         ->update(['creditLimit' => $customer->creditLimit - $totalAmount]);
-        //     DB::insert('insert into payments (customerNumber, checkNumber, paymentDate, amount) values (?, ?, ?, ?)'
-        //                 , [ $customer->customerNumber, $checkNumber,$requiredDate ,$totalAmount]);
-        //     return response()->json("payment success", 200);
-        // }else{
-        //     return response()->json("payment failed", 422);
-        // }
+        if($customer->creditLimit >= $totalAmount && $customer->creditLimit != null){
+            Customer::where('customerNumber',$customer->customerNumber)
+                ->update(['creditLimit' => $customer->creditLimit - $totalAmount]);
+            DB::insert('insert into payments (customerNumber, checkNumber, paymentDate, amount) values (?, ?, ?, ?)'
+                        , [ $customer->customerNumber, $checkNumber,$requiredDate ,$totalAmount]);
+            return response()->json("payment success", 200);
+        }else{
+            return response()->json("payment failed", 422);
+        }
         return $productIncart;
 
     }
