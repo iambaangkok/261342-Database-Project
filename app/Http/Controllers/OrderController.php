@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
 {
-    public function pagination(Request $request)
+    public function orderall(Request $request)
     {
         $remember_token = $request["remember_token"];
         
