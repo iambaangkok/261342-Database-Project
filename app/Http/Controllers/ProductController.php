@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Product; ## Wait Product
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\limit;
+use App\Models\Productline;
 
 class ProductController extends Controller
 {
@@ -132,16 +133,29 @@ class ProductController extends Controller
         //
     }
 
+    public function productlines(){
+        $productlines = ProductLine::all();
+
+        return response()->json($productlines, 200);
+    }
+
     public function searchproduct(Request $request)
     {
         $key = $request["searchKey"];
 
 
-        
+        $productLine = Productline::where('productLine', '=', $key);
 
-        $search_product = Product::where('productName', 'like', '%'. $key . '%')
+        if($productLine != null){
+            $search_product = Product::where('productLine', 'like', $key)
+            ->get();
+        }else{
+            $search_product = Product::where('productName', 'like', '%'. $key . '%')
             ->orwhere('productVendor', 'like', '%'. $key . '%')
             ->get();
+        }
+
+        
 
        
 
