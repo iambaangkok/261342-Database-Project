@@ -14,8 +14,8 @@ class AddForeignKeysToProductincartsTable extends Migration
     public function up()
     {
         Schema::table('productincarts', function (Blueprint $table) {
-            $table->foreign(['productCode'], 'productincarts_ibfk_2')->references(['productCode'])->on('products');
-            $table->foreign(['cartid'], 'productincarts_ibfk_1')->references(['cartid'])->on('carts');
+            $table->foreign(['productCode'], 'productincarts_ibfk_2')->references(['productCode'])->on('products')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign(['cartid'], 'productincarts_ibfk_1')->references(['cartid'])->on('carts')->onDelete('cascade')->onUpdate('cascade');
         });
     }
 

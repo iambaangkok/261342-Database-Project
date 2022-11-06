@@ -14,7 +14,7 @@ class AddForeignKeysToCartsTable extends Migration
     public function up()
     {
         Schema::table('carts', function (Blueprint $table) {
-            $table->foreign(['id_user'], 'cart_ibfk_1')->references(['id'])->on('users');
+            $table->foreign(['id_user'], 'cart_ibfk_1')->references(['id'])->on('users')->onDelete('cascade')->onUpdate('cascade');
             // $table->foreign(['productCode'], 'cart_ibfk_2')->references(['productCode'])->on('products');
         });
     }

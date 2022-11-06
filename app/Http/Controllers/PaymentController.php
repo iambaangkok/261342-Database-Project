@@ -90,7 +90,7 @@ class PaymentController extends Controller
             // DB::insert('insert into orders (orderNumber, orderDate, requiredDate,shippedDate, status,comments, customerNumber) values (?,?,?,?,?,?,?)', 
             //     [ $thisOrderNum,  now()->format('Y-m-d'),$requiredDate, NULL, 'In Process',NULL ,$customer['customerNumber']]);
 
-
+            
             //ฉบับ น๊นหน๊น
             DB::insert('insert into orders (orderNumber, orderDate, requiredDate,shippedDate, status,comments, customerNumber, checkNumber) values (?,?,?,?,?,?,?,?)', 
             [ $thisOrderNum,  now()->format('Y-m-d'),now()->format('Y-m-d'), NULL, 'In Process',NULL ,$customer['customerNumber'], $checkNumber]);
