@@ -22,7 +22,7 @@ class CartsTableSeeder extends Seeder
             0 => 
             array (
                 'cartid' => 1,
-                'id_user' => 5,
+                'id_user' => 4,
             ),
         ));
         
