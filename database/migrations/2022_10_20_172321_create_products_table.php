@@ -25,6 +25,7 @@ class CreateProductsTable extends Migration
             $table->decimal('MSRP', 10);
 
             $table->primary(['productCode']);
+            $table->index(['productLine','productVendor','productName']);
         });
     }
 
