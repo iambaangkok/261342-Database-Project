@@ -142,9 +142,9 @@ class ProductController extends Controller
     public function searchproduct(Request $request)
     {
         $key = $request["searchKey"];
+        // $category = array("Classic Cars", "Motorcycles", "Planes", "Ships", "Trains", "Trucks and Buses", "Vintage Cars");
 
-
-        $productLine = Productline::where('productLine', '=', $key);
+        $productLine = DB::table('productLines')->where('productLine', $key)->first();
 
         if($productLine != null){
             $search_product = Product::where('productLine', 'like', $key)
@@ -154,11 +154,8 @@ class ProductController extends Controller
             ->orwhere('productVendor', 'like', '%'. $key . '%')
             ->get();
         }
-
-        
-
        
 
-        return response()->json($search_product, 200);
+        return response()->json($search_product,200);//[$search_product, $productLine] , 200);
     }
 }
